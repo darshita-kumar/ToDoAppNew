@@ -2,8 +2,11 @@ package com.example.todoapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -149,8 +152,33 @@ public class AddEvent extends AppCompatActivity
         else
             Toast.makeText(AddEvent.this,"Unable to set event. Try changing the name of the event",Toast.LENGTH_LONG).show();
 
+        if(sw.isChecked())
+        {
+            //Calendar cal = Calendar.getInstance();
+            //cal.set(2019, Integer.parseInt(date.substring(3,5)), Integer.parseInt(date.substring(0,2)), Integer.parseInt(time.substring(0,2)), Integer.parseInt(time.substring(3,5)));
+
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time.substring(0,2)));
+            c.set(Calendar.MINUTE,Integer.parseInt(time.substring(3,5)));
+            c.set(Calendar.SECOND, 0);
+            startAlarm(c);
+        }
+
         Intent intent = new Intent(AddEvent.this, MainActivity.class);
         startActivity(intent);
+    }
+
+    private void startAlarm(Calendar c)
+    {
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this,AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent,0);
+
+        if (c.before(Calendar.getInstance())) {
+            c.add(Calendar.DATE, 1);
+        }
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
 }
