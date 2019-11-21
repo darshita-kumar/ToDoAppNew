@@ -43,12 +43,12 @@ public class AddEvent extends AppCompatActivity
         setContentView(R.layout.activity_add_event);
         Bundle extras = getIntent().getExtras();
 
-        if(extras.getInt("SRNO")!=0)
+        if(extras.getString("TITLE").equals("null")==false)
         {
             DataBaseOpenHelper db = new DataBaseOpenHelper(this);
             Cursor res = db.getAllData();
             while (res.moveToNext()) {
-                if (res.getString(1).equals(extras.getString("ti")))
+                if (res.getString(1).equals(extras.getString("TITLE")))
                     break;
             }
 

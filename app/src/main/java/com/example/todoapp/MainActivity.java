@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,7 +46,17 @@ public class MainActivity extends AppCompatActivity
 //                        .setAction("Action", null).show();
 
                 Intent intent = new Intent(MainActivity.this, AddEvent.class);
-                intent.putExtra("ti","0");
+                intent.putExtra("TITLE","null");
+                startActivity(intent);
+            }
+        });
+
+        tasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String item = (String) (tasks.getItemAtPosition(position));
+                Intent intent = new Intent(MainActivity.this,AddEvent.class);
+                intent.putExtra("TITLE",item);
                 startActivity(intent);
             }
         });
